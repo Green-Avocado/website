@@ -5,27 +5,55 @@ const express = require('express');
 
 const app = express();
 
-function serverlog(req, code, msg) {
+app.set('view engine', 'ejs');
+
+
+
+function serverlog(req, code) {
     console.log(
         new Date,
         'Request: ' + req.protocol + '://' + req.get('host') + req.originalUrl,
-        'Response: (' + code + ') ' + msg
+        'Response: (' + code + ')'
     );
 }
 
-app.use("*", function(req, res, next) {
-    const res_msg = 'pending';
-    const res_code = 'pending';
+app.get('/', function(req, res) {
+    const res_code = 200;
+    serverlog(req, res_code)
 
-    serverlog(req, res_code, res_msg);
-    next();
+    res.render('pages/index');
 });
 
-app.use('*', function(req, res) {
-    const res_msg = 'Not found';
-    const res_code = 404;
 
-    serverlog(req, res_code, res_msg)
+
+app.get('/about', function(req, res) {
+    const res_code = 200;
+    serverlog(req, res_code)
+
+    res.render('pages/about');
+});
+
+app.get('/services', function(req, res) {
+    const res_code = 200;
+    serverlog(req, res_code)
+
+    res.render('pages/services');
+});
+
+app.get('/contact', function(req, res) {
+    const res_code = 200;
+    serverlog(req, res_code)
+
+    res.render('pages/contact');
+});
+
+
+
+app.use('*', function(req, res) {
+    const res_code = 404;
+    serverlog(req, res_code)
+
+    const res_msg = 'Not found';
     res.status(res_code);
 
     if(req.accepts('html')) {
@@ -40,6 +68,8 @@ app.use('*', function(req, res) {
 
     res.type('txt').send(res_msg);
 });
+
+
 
 app.listen(3001);
 
