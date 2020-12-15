@@ -1,6 +1,7 @@
+#!/usr/bin/env node
+
 const ejs = require('ejs');
 const express = require('express');
-const path = require('path');
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use("*", function(req, res, next) {
     next();
 });
 
-app.get('*', function(req, res) {
+app.use('*', function(req, res) {
     const res_msg = 'Not found';
     const res_code = 404;
 
@@ -28,7 +29,7 @@ app.get('*', function(req, res) {
     res.status(res_code);
 
     if(req.accepts('html')) {
-        res.sendFile(path.join(__dirname + './resources/404.html'));
+        res.sendFile('./resources/404.html', { root: __dirname });
         return ;
     }
 
