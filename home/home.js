@@ -49,6 +49,15 @@ app.get('/contact', function(req, res) {
 
 
 
+app.get('/favicon.ico', function(req, res) {
+    const res_code = 200;
+    serverlog(req, res_code)
+
+    res.sendFile('./resources/favicon.ico', { root: __dirname });
+});
+
+
+
 app.use('*', function(req, res) {
     const res_code = 404;
     serverlog(req, res_code)
@@ -58,7 +67,7 @@ app.use('*', function(req, res) {
 
     if(req.accepts('html')) {
         res.sendFile('./resources/404.html', { root: __dirname });
-        return ;
+        return;
     }
 
     if(req.accepts('json')) {
