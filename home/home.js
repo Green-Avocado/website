@@ -49,12 +49,7 @@ app.get('/contact', function(req, res) {
 
 
 
-app.get('/favicon.ico', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code)
-
-    res.sendFile('./resources/favicon.ico', { root: __dirname });
-});
+app.use(express.static('./resources'));
 
 
 
