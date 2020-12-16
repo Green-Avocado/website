@@ -71,11 +71,17 @@ app.get('/', function(req, res) {
     serverlog(req, res_code);
 
     res.render('pages/index');
+    return;
 });
 
 
 
-app.get(express.static('./resources'));
+app.get('/favicon.ico', function(req, res) {
+    res.sendFile('./resources/favicon.ico', { root: __dirname })
+    return;
+});
+
+app.use('/resources', express.static(__dirname + '/resources'));
 
 
 
@@ -97,6 +103,7 @@ app.use('*', function(req, res) {
     }
 
     res.type('txt').send(res_msg);
+    return;
 });
 
 

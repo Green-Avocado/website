@@ -45,6 +45,7 @@ api.use('*', cors(corsOptions), function(req, res, next) {
         }
 
         res.type('txt').send(res_msg);
+        return;
     }
 });
 
@@ -63,6 +64,7 @@ api.get('*', function(req, res) {
     }
 
     res.type('txt').send(res_msg);
+    return;
 });
 
 
@@ -80,6 +82,7 @@ api.use('*', function(req, res) {
     }
 
     res.type('txt').send(res_msg);
+    return;
 });
 
 
