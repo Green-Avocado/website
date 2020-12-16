@@ -9,8 +9,7 @@ const yargs = require('yargs');
 const PORT = 5001;
 
 var allowedHosts = [
-    'jasonn.dev',
-    'www.jasonn.dev'
+    'blog.jasonn.dev'
 ]
 
 
