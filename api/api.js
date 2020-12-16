@@ -65,6 +65,23 @@ api.get('*', function(req, res) {
 
 
 
+api.use('*', function(req, res) {
+    const res_code = 404;
+    serverlog(req, res_code)
+
+    const res_msg = 'Not found';
+    res.status(res_code);
+
+    if(req.accepts('json')) {
+        res.json({ error: res_msg });
+        return;
+    }
+
+    res.type('txt').send(res_msg);
+});
+
+
+
 api.listen(PORT);
 
 process.on('SIGINT', function() {

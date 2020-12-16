@@ -49,7 +49,7 @@ function serverlog(req, code) {
 
 
 
-app.get('*', function(req, res, next) {
+app.use('*', function(req, res, next) {
     if(allowedHosts.includes(req.get('host'))) {
         next();
     }
@@ -76,7 +76,7 @@ app.get('/', function(req, res) {
 
 
 
-app.use(express.static('./resources'));
+app.get(express.static('./resources'));
 
 
 
