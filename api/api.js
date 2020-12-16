@@ -49,10 +49,10 @@ api.use('*', cors(corsOptions), function(req, res, next) {
 
 
 api.get('*', function(req, res) {
-    const res_code = 404;
+    const res_code = 501;
     serverlog(req, res_code)
 
-    const res_msg = 'Not found';
+    const res_msg = 'Not implemented';
     res.status(res_code);
 
     if(req.accepts('json')) {
