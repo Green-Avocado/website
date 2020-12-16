@@ -91,7 +91,6 @@ api.listen(PORT);
 
 process.on('SIGINT', function() {
     console.log('\nGracefully shutting down from SIGINT (Ctrl-C)\n');
-    contact_db.close();
     process.exit();
 });
 
