@@ -50,12 +50,10 @@ function serverlog(req, code) {
 
 
 app.get('*', function(req, res, next) {
-    if(allowedHosts.includes(req.get('host')))
-    {
+    if(allowedHosts.includes(req.get('host'))) {
         next();
     }
-    else
-    {
+    else {
         const res_code = 400;
         serverlog(req, res_code);
 
