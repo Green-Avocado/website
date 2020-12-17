@@ -58,7 +58,7 @@ app.use(
                 ...helmet.contentSecurityPolicy.getDefaultDirectives(),
                 "form-action": ["'self'"],
                 "script-src": ["'self'", "ajax.googleapis.com", "cdnjs.cloudflare.com", "maxcdn.bootstrapcdn.com"],
-                "style-src": ["'self'"],
+                "style-src": ["'self'", "maxcdn.bootstrapcdn.com"],
             },
         },
     })

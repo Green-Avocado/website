@@ -50,17 +50,17 @@ function serverlog(req, code) {
 
 
 
-app.use(    
-    helmet({    
-        contentSecurityPolicy: {    
-            directives: {    
-                ...helmet.contentSecurityPolicy.getDefaultDirectives(),    
-                "form-action": ["'self'"],    
-                "script-src": ["'self'", "ajax.googleapis.com", "cdnjs.cloudflare.com", "maxcdn.bootstrapcdn.com"],    
-                "style-src": ["'self'"],    
-            },    
-        },    
-    })    
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+                "form-action": ["'self'"],
+                "script-src": ["'self'", "ajax.googleapis.com", "cdnjs.cloudflare.com", "maxcdn.bootstrapcdn.com"],
+                "style-src": ["'self'", "maxcdn.bootstrapcdn.com"],
+            },
+        },
+    })
 );
 
 app.use(nocache());
