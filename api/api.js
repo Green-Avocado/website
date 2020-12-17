@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
+const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const cors = require('cors');
+const nocache = require('nocache');
 
 
 
@@ -30,6 +31,8 @@ function serverlog(req, code) {
 
 
 api.use(helmet());
+
+api.use(nocache());
 
 api.use('*', cors(corsOptions), function(req, res, next) {
     if (whitelist.includes(req.header('Origin'))) {
