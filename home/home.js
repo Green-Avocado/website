@@ -2,6 +2,7 @@
 
 const ejs = require('ejs');
 const express = require('express');
+const helmet = require('helmet');
 const yargs = require('yargs');
 
 
@@ -48,6 +49,8 @@ function serverlog(req, code) {
 }
 
 
+
+app.use(helmet());
 
 app.use('*', function(req, res, next) {
     if(allowedHosts.includes(req.get('host'))) {

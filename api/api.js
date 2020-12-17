@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const express = require('express');
+const helmet = require('helmet');
 const cors = require('cors');
 
 
@@ -27,6 +28,8 @@ function serverlog(req, code) {
 }
 
 
+
+api.use(helmet());
 
 api.use('*', cors(corsOptions), function(req, res, next) {
     if (whitelist.includes(req.header('Origin'))) {
