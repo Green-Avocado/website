@@ -40,7 +40,7 @@ api.use('*', cors(corsOptions), function(req, res, next) {
     }
     else {
         const res_code = 403;
-        serverlog(req, res_code, res_msg);
+        serverlog(req, res_code);
 
         const res_msg = 'Forbidden';
         res.status(res_code);
