@@ -56,8 +56,16 @@ app.use(
             directives: {
                 ...helmet.contentSecurityPolicy.getDefaultDirectives(),
                 "form-action": ["'self'"],
-                "script-src": ["'self'", "ajax.googleapis.com", "cdnjs.cloudflare.com", "maxcdn.bootstrapcdn.com"],
-                "style-src": ["'self'", "maxcdn.bootstrapcdn.com"],
+                "script-src": [
+                    "'self'",
+                    "ajax.googleapis.com",
+                    "cdnjs.cloudflare.com",
+                    "maxcdn.bootstrapcdn.com"
+                ],
+                "style-src": [
+                    "'self'",
+                    "maxcdn.bootstrapcdn.com"
+                ],
             },
         },
     })
