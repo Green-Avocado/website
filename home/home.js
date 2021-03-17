@@ -110,22 +110,6 @@ app.get('/about', function(req, res) {
     return;
 });
 
-app.get('/services', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
-
-    res.render('pages/services');
-    return;
-});
-
-app.get('/contact', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
-
-    res.render('pages/contact');
-    return;
-});
-
 
 
 app.get('/favicon.ico', function(req, res) {
