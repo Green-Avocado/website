@@ -1,0 +1,26 @@
+{
+  "name": "projects",
+  "version": "1.0.0",
+  "description": "Web server for hosting recent and actively supported projects.",
+  "main": "projects.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Green-Avocado/projects.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Green-Avocado/projects/issues"
+  },
+  "homepage": "https://github.com/Green-Avocado/projects#readme",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "helmet": "^4.2.0",
+    "nocache": "^2.1.0",
+    "yargs": "^16.2.0"
+  }
+}
