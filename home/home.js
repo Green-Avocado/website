@@ -6,40 +6,11 @@ const helmet = require('helmet');
 const nocache = require('nocache');
 const yargs = require('yargs');
 
-
-
 const PORT = 5000;
-
-var allowedHosts = [
-    'jasonn.dev',
-    'www.jasonn.dev'
-]
-
-
-
-const argv = yargs
-    .option('local', {
-        alias: 'l',
-        description: 'Allow requests to localhost',
-        type: 'boolean',
-    })
-    .help()
-    .alias('help', 'h')
-    .argv;
-
-if (argv.local) {
-    console.log(`Running on localhost:${PORT}`);
-
-    allowedHosts = [`localhost:${PORT}`];
-}
-
-
 
 const app = express();
 
 app.set('view engine', 'ejs');
-
-
 
 function serverlog(req, code) {
     console.log(
@@ -48,8 +19,6 @@ function serverlog(req, code) {
         'Response: (' + code + ')'
     );
 }
-
-
 
 app.use(
     helmet({
@@ -74,24 +43,6 @@ app.use(
 
 app.use(nocache());
 
-app.use('*', function(req, res, next) {
-    if(allowedHosts.includes(req.get('host'))) {
-        next();
-    }
-    else {
-        const res_code = 400;
-        serverlog(req, res_code);
-
-        const res_msg = 'Bad Request';
-        res.status(res_code);
-
-        res.type('txt').send(res_msg);
-        return;
-    }
-});
-
-
-
 app.get('/', function(req, res) {
     const res_code = 200;
     serverlog(req, res_code);
@@ -99,8 +50,6 @@ app.get('/', function(req, res) {
     res.render('pages/index');
     return;
 });
-
-
 
 app.get('/about', function(req, res) {
     const res_code = 200;
@@ -110,16 +59,12 @@ app.get('/about', function(req, res) {
     return;
 });
 
-
-
 app.get('/favicon.ico', function(req, res) {
     res.sendFile('./resources/favicon.ico', { root: __dirname });
     return;
 });
 
 app.use('/resources', express.static(__dirname + '/resources'));
-
-
 
 app.use('*', function(req, res) {
     const res_code = 404;
@@ -141,8 +86,6 @@ app.use('*', function(req, res) {
     res.type('txt').send(res_msg);
     return;
 });
-
-
 
 app.listen(PORT);
 

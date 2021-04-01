@@ -5,8 +5,6 @@ const express = require('express');
 const helmet = require('helmet');
 const nocache = require('nocache');
 
-
-
 const PORT = 5010;
 
 const whitelist = ['https://jasonn.dev', 'https://www.jasonn.dev']
@@ -14,11 +12,7 @@ const corsOptions = {
   origin: whitelist,
 }
 
-
-
 const api = express();
-
-
 
 function serverlog(req, code) {
     console.log(
@@ -28,10 +22,7 @@ function serverlog(req, code) {
     );
 }
 
-
-
 api.use(helmet());
-
 api.use(nocache());
 
 api.use('*', cors(corsOptions), function(req, res, next) {
@@ -55,8 +46,6 @@ api.use('*', cors(corsOptions), function(req, res, next) {
     }
 });
 
-
-
 api.get('*', function(req, res) {
     const res_code = 501;
     serverlog(req, res_code)
@@ -73,8 +62,6 @@ api.get('*', function(req, res) {
     return;
 });
 
-
-
 api.use('*', function(req, res) {
     const res_code = 404;
     serverlog(req, res_code)
@@ -90,8 +77,6 @@ api.use('*', function(req, res) {
     res.type('txt').send(res_msg);
     return;
 });
-
-
 
 api.listen(PORT);
 
