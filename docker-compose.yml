@@ -1,0 +1,18 @@
+services:
+    home:
+        build: home
+        ports:
+            - "5000:5000"
+    api:
+        build: home
+        ports:
+            - "5010:5010"
+    blog:
+        build: blog
+        ports:
+            - "5020:5020"
+    projects:
+        build: projects
+        ports:
+            - "5030:5030"
+
