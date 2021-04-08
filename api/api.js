@@ -4,12 +4,35 @@ const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const nocache = require('nocache');
+const yargs = require('yargs');
+
+const argv = yargs
+    .option('debug', {
+        alias: 'd',
+        description: 'Allow requests from localhost',
+        type: 'boolean',
+    })
+    .help()
+    .alias('help', 'h')
+    .argv;
 
 const PORT = 5010;
 
-const whitelist = ['https://jasonn.dev', 'https://www.jasonn.dev']
+const whitelist = [
+    'https://jasonn.dev',
+    'https://www.jasonn.dev',
+    'https://blog.jasonn.dev',
+    'https://projects.jasonn.dev',
+]
+
+const whitelist_debug = [
+    'http://localhost:5000',
+    'http://localhost:5020',
+    'http://localhost:5030',
+]
+
 const corsOptions = {
-  origin: whitelist,
+    origin: argv.debug? whitelist_debug : whitelist,
 }
 
 const api = express();
@@ -25,26 +48,7 @@ function serverlog(req, code) {
 api.use(helmet());
 api.use(nocache());
 
-api.use('*', cors(corsOptions), function(req, res, next) {
-    if (whitelist.includes(req.header('Origin'))) {
-        next();
-    }
-    else {
-        const res_code = 403;
-        serverlog(req, res_code);
-
-        const res_msg = 'Forbidden';
-        res.status(res_code);
-
-        if(req.accepts('json')) {
-            res.json({ error: res_msg });
-            return;
-        }
-
-        res.type('txt').send(res_msg);
-        return;
-    }
-});
+api.use('*', cors(corsOptions));
 
 api.get('*', function(req, res) {
     const res_code = 501;
