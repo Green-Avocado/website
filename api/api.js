@@ -48,26 +48,7 @@ function serverlog(req, code) {
 api.use(helmet());
 api.use(nocache());
 
-api.use('*', cors(corsOptions), function(req, res, next) {
-    if (whitelist.includes(req.header('Origin'))) {
-        next();
-    }
-    else {
-        const res_code = 403;
-        serverlog(req, res_code);
-
-        const res_msg = 'Forbidden';
-        res.status(res_code);
-
-        if(req.accepts('json')) {
-            res.json({ error: res_msg });
-            return;
-        }
-
-        res.type('txt').send(res_msg);
-        return;
-    }
-});
+api.use('*', cors(corsOptions));
 
 api.get('*', function(req, res) {
     const res_code = 501;
