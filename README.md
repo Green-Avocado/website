@@ -8,7 +8,6 @@ This is the stable branch.
 
 ```
 $ git clone https://github.com/Green-Avocado/website.git
-$ git checkout stable
 ```
 
 ### build docker images
