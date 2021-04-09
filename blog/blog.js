@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const express = require('express');
 const fetch = require('node-fetch');
 const helmet = require('helmet');
+const HTMLParser = require('node-html-parser');
 const nocache = require('nocache');
 const path = require('path');
 const showdown = require('showdown');
@@ -30,12 +31,27 @@ function serverlog(req, code) {
 }
 
 function fixLinks(html, originalUrl) {
-    const href_regex = new RegExp('href="./', 'g')
-    const src_regex = new RegExp('src="./', 'g')
+    const html_parsed = HTMLParser.parse(html);
+    const hyperlinks = html_parsed.querySelectorAll('a');
+    const images = html_parsed.querySelectorAll('img');
 
-    return html
-        .replace(href_regex, `href="${originalUrl}/`)
-        .replace(src_regex, `src="${originalUrl}/`);
+    for(let i = 0; i < hyperlinks.length; i++) {
+        link = hyperlinks[i].getAttribute('href');
+
+        if(!link.startsWith('/') && !link.includes('//')) {
+            hyperlinks[i].setAttribute('href', `${originalUrl}/${link}`);
+        }
+    }
+
+    for(let i = 0; i < images.length; i++) {
+        source = images[i].getAttribute('src');
+
+        if(!source.startsWith('/') && !source.includes('//')) {
+            images[i].setAttribute('src', `${originalUrl}/${source}`);
+        }
+    }
+
+    return html_parsed.toString();
 }
 
 app.use(
