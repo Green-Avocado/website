@@ -65,7 +65,7 @@ app.get('/dev', function(req, res) {
 app.get('/ctf', function(req, res) {
     serverlog(req, 200);
 
-    res.render('pages/ctf/index');
+    res.render('pages/ctf/readme');
     return;
 });
 
@@ -78,9 +78,10 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
+        let markdown_html = converter.makeHtml(markdown_text);
 
         serverlog(req, 200);
-        res.status(200).type('txt').send(markdown_text);
+        res.render('pages/ctf/readme', {readme_html: markdown_html});
         return;
     }
     else {
@@ -99,9 +100,10 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
+        let markdown_html = converter.makeHtml(markdown_text);
 
         serverlog(req, 200);
-        res.status(200).type('txt').send(markdown_text);
+        res.render('pages/ctf/readme', {readme_html: markdown_html});
         return;
     }
     else {
