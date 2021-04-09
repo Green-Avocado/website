@@ -5,6 +5,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const helmet = require('helmet');
 const nocache = require('nocache');
+const path = require('path');
 const showdown = require('showdown');
 const yargs = require('yargs');
 
@@ -68,10 +69,9 @@ app.get('/dev', function(req, res) {
 
 app.get('/ctf', async function(req, res, next) {
     let github_url = path.normalize(
-        `${github_prefix}` +
         '/README.md'
     );
-    let markdown_res = await fetch(github_url);
+    let markdown_res = await fetch(github_prefix + github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -89,11 +89,10 @@ app.get('/ctf', async function(req, res, next) {
 
 app.get('/ctf/:ctf_event', async function(req, res, next) {
     let github_url = path.normalize(
-        `${github_prefix}` +
         `/${req.params.ctf_event}` +
         '/README.md'
     );
-    let markdown_res = await fetch(github_url);
+    let markdown_res = await fetch(github_url + github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -111,13 +110,12 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
 
 app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
     let github_url = path.normalize(
-        `${github_prefix}` +
         `/${req.params.ctf_event}` +
         `/${req.params.ctf_type}` +
         `/${req.params.ctf_chal}` +
         '/README.md'
     );
-    let markdown_res = await fetch(github_url);
+    let markdown_res = await fetch(github_url + github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -135,14 +133,13 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
 
 app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal/resources/:ctf_asset', async function(req, res, next) {
     let github_url = path.normalize(
-        `${github_prefix}` +
         `/${req.params.ctf_event}` +
         `/${req.params.ctf_type}` +
         `/${req.params.ctf_chal}` +
         '/resources' +
         `/${req.params.ctf_asset}`
     );
-    let asset_res = await fetch(github_url);
+    let asset_res = await fetch(github_url + github_url);
 
     if(asset_res.ok) {
         let asset_data = await asset_res.buffer();
