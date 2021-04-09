@@ -67,10 +67,11 @@ app.get('/dev', function(req, res) {
 });
 
 app.get('/ctf', async function(req, res, next) {
-    let markdown_res = await fetch(
+    let github_url = path.normalize(
         `${github_prefix}` +
         '/README.md'
     );
+    let markdown_res = await fetch(github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -87,11 +88,12 @@ app.get('/ctf', async function(req, res, next) {
 });
 
 app.get('/ctf/:ctf_event', async function(req, res, next) {
-    let markdown_res = await fetch(
+    let github_url = path.normalize(
         `${github_prefix}` +
         `/${req.params.ctf_event}` +
         '/README.md'
     );
+    let markdown_res = await fetch(github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -108,13 +110,14 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
 });
 
 app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
-    let markdown_res = await fetch(
+    let github_url = path.normalize(
         `${github_prefix}` +
         `/${req.params.ctf_event}` +
         `/${req.params.ctf_type}` +
         `/${req.params.ctf_chal}` +
         '/README.md'
     );
+    let markdown_res = await fetch(github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -131,7 +134,7 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
 });
 
 app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal/resources/:ctf_asset', async function(req, res, next) {
-    let asset_res = await fetch(
+    let github_url = path.normalize(
         `${github_prefix}` +
         `/${req.params.ctf_event}` +
         `/${req.params.ctf_type}` +
@@ -139,8 +142,7 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal/resources/:ctf_asset', async functi
         '/resources' +
         `/${req.params.ctf_asset}`
     );
-
-    console.log(asset_res)
+    let asset_res = await fetch(github_url);
 
     if(asset_res.ok) {
         let asset_data = await asset_res.buffer();
