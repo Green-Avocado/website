@@ -15,7 +15,6 @@ const app = express();
 const converter = new showdown.Converter();
 
 const github_prefix = 'https://raw.githubusercontent.com/Green-Avocado/CTF/master';
-const href_regex = new RegExp('href="./', 'g')
 
 app.set('view engine', 'ejs');
 
@@ -28,6 +27,15 @@ function serverlog(req, code) {
         'Request: ' + req.protocol + '://' + req.get('host') + req.originalUrl,
         'Response: (' + code + ')'
     );
+}
+
+function fixLinks(html, originalUrl) {
+    const href_regex = new RegExp('href="./', 'g')
+    const src_regex = new RegExp('src="./', 'g')
+
+    return html
+        .replace(href_regex, `href="${originalUrl}/`)
+        .replace(src_regex, `src="${originalUrl}/`);
 }
 
 app.use(
@@ -75,8 +83,7 @@ app.get('/ctf', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = converter.makeHtml(markdown_text)
-            .replace(href_regex, `href="${req.originalUrl}/`);
+        let markdown_html = fixLinks(converter.makeHtml(markdown_text), req.originalUrl);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
@@ -96,8 +103,7 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = converter.makeHtml(markdown_text)
-            .replace(href_regex, `href="${req.originalUrl}/`);
+        let markdown_html = fixLinks(converter.makeHtml(markdown_text), req.originalUrl);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
@@ -119,8 +125,7 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = converter.makeHtml(markdown_text)
-            .replace(href_regex, `href="${req.originalUrl}/`);
+        let markdown_html = fixLinks(converter.makeHtml(markdown_text), req.originalUrl);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
