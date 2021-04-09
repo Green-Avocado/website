@@ -64,6 +64,11 @@ app.get('/favicon.ico', function(req, res) {
     return;
 });
 
+app.get('/robots.txt', function(req, res) {
+    res.sendFile('./resources/robots.txt', { root: __dirname });
+    return;
+});
+
 app.use('/resources', express.static(__dirname + '/resources'));
 
 app.use('*', function(req, res) {
