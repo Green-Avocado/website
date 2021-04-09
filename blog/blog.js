@@ -2,15 +2,24 @@
 
 const ejs = require('ejs');
 const express = require('express');
+const fetch = require('node-fetch');
 const helmet = require('helmet');
 const nocache = require('nocache');
+const showdown = require('showdown');
 const yargs = require('yargs');
 
 const PORT = 5020;
 
 const app = express();
+const converter = new showdown.Converter();
+
+const github_prefix = 'https://raw.githubusercontent.com/Green-Avocado/CTF/master';
+const href_regex = new RegExp('href="./', 'g')
 
 app.set('view engine', 'ejs');
+
+converter.setOption('simplifiedAutoLink', true);
+converter.setOption('excludeTrailingPunctuationFromURLs', true);
 
 function serverlog(req, code) {
     console.log(
@@ -44,27 +53,105 @@ app.use(
 app.use(nocache());
 
 app.get('/', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
+    serverlog(req, 200);
 
     res.render('pages/index');
     return;
 });
 
 app.get('/dev', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
+    serverlog(req, 200);
 
     res.render('pages/dev/index');
     return;
 });
 
-app.get('/ctf', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
+app.get('/ctf', async function(req, res, next) {
+    let markdown_res = await fetch(
+        `${github_prefix}` +
+        '/README.md'
+    );
 
-    res.render('pages/ctf/index');
-    return;
+    if(markdown_res.ok) {
+        let markdown_text = await markdown_res.text();
+        let markdown_html = converter.makeHtml(markdown_text)
+            .replace(href_regex, `href="${req.originalUrl}/`);
+
+        serverlog(req, 200);
+        res.render('pages/ctf/readme', {readme_html: markdown_html});
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.get('/ctf/:ctf_event', async function(req, res, next) {
+    let markdown_res = await fetch(
+        `${github_prefix}` +
+        `/${req.params.ctf_event}` +
+        '/README.md'
+    );
+
+    if(markdown_res.ok) {
+        let markdown_text = await markdown_res.text();
+        let markdown_html = converter.makeHtml(markdown_text)
+            .replace(href_regex, `href="${req.originalUrl}/`);
+
+        serverlog(req, 200);
+        res.render('pages/ctf/readme', {readme_html: markdown_html});
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
+    let markdown_res = await fetch(
+        `${github_prefix}` +
+        `/${req.params.ctf_event}` +
+        `/${req.params.ctf_type}` +
+        `/${req.params.ctf_chal}` +
+        '/README.md'
+    );
+
+    if(markdown_res.ok) {
+        let markdown_text = await markdown_res.text();
+        let markdown_html = converter.makeHtml(markdown_text)
+            .replace(href_regex, `href="${req.originalUrl}/`);
+
+        serverlog(req, 200);
+        res.render('pages/ctf/readme', {readme_html: markdown_html});
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal/resources/:ctf_asset', async function(req, res, next) {
+    let asset_res = await fetch(
+        `${github_prefix}` +
+        `/${req.params.ctf_event}` +
+        `/${req.params.ctf_type}` +
+        `/${req.params.ctf_chal}` +
+        '/resources' +
+        `/${req.params.ctf_asset}`
+    );
+
+    console.log(asset_res)
+
+    if(asset_res.ok) {
+        let asset_data = await asset_res.buffer();
+
+        serverlog(req, 200);
+        res.status(200).send(asset_data);
+        return;
+    }
+    else {
+        next();
+    }
 });
 
 app.get('/favicon.ico', function(req, res) {
