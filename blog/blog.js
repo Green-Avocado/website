@@ -92,7 +92,7 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
         `/${req.params.ctf_event}` +
         '/README.md'
     );
-    let markdown_res = await fetch(github_url + github_url);
+    let markdown_res = await fetch(github_prefix + github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -115,7 +115,7 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
         `/${req.params.ctf_chal}` +
         '/README.md'
     );
-    let markdown_res = await fetch(github_url + github_url);
+    let markdown_res = await fetch(github_prefix + github_url);
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
@@ -139,7 +139,7 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal/resources/:ctf_asset', async functi
         '/resources' +
         `/${req.params.ctf_asset}`
     );
-    let asset_res = await fetch(github_url + github_url);
+    let asset_res = await fetch(github_prefix + github_url);
 
     if(asset_res.ok) {
         let asset_data = await asset_res.buffer();
