@@ -62,11 +62,23 @@ app.get('/dev', function(req, res) {
     return;
 });
 
-app.get('/ctf', function(req, res) {
-    serverlog(req, 200);
+app.get('/ctf', async function(req, res, next) {
+    let markdown_res = await fetch(
+        `${github_prefix}` +
+        '/README.md'
+    );
 
-    res.render('pages/ctf/readme');
-    return;
+    if(markdown_res.ok) {
+        let markdown_text = await markdown_res.text();
+        let markdown_html = converter.makeHtml(markdown_text);
+
+        serverlog(req, 200);
+        res.render('pages/ctf/readme', {readme_html: markdown_html});
+        return;
+    }
+    else {
+        next();
+    }
 });
 
 app.get('/ctf/:ctf_event', async function(req, res, next) {
