@@ -14,8 +14,12 @@ const app = express();
 const converter = new showdown.Converter();
 
 const github_prefix = 'https://raw.githubusercontent.com/Green-Avocado/CTF/master';
+const href_regex = new RegExp('href="./', 'g')
 
 app.set('view engine', 'ejs');
+
+converter.setOption('simplifiedAutoLink', true);
+converter.setOption('excludeTrailingPunctuationFromURLs', true);
 
 function serverlog(req, code) {
     console.log(
@@ -70,7 +74,8 @@ app.get('/ctf', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = converter.makeHtml(markdown_text);
+        let markdown_html = converter.makeHtml(markdown_text)
+            .replace(href_regex, `href="${req.originalUrl}/`);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
@@ -90,7 +95,8 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = converter.makeHtml(markdown_text);
+        let markdown_html = converter.makeHtml(markdown_text)
+            .replace(href_regex, `href="${req.originalUrl}/`);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
@@ -112,7 +118,8 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = converter.makeHtml(markdown_text);
+        let markdown_html = converter.makeHtml(markdown_text)
+            .replace(href_regex, `href="${req.originalUrl}/`);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
