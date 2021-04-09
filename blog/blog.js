@@ -2,13 +2,18 @@
 
 const ejs = require('ejs');
 const express = require('express');
+const fetch = require('node-fetch');
 const helmet = require('helmet');
 const nocache = require('nocache');
+const showdown = require('showdown');
 const yargs = require('yargs');
 
 const PORT = 5020;
 
 const app = express();
+const converter = new showdown.Converter();
+
+const github_prefix = 'https://raw.githubusercontent.com/Green-Avocado/CTF/master';
 
 app.set('view engine', 'ejs');
 
@@ -62,6 +67,70 @@ app.get('/ctf', function(req, res) {
 
     res.render('pages/ctf/index');
     return;
+});
+
+app.get('/ctf/:ctf_event', async function(req, res, next) {
+    let markdown_res = await fetch(
+        `${github_prefix}` +
+        `/${req.params.ctf_event}` +
+        '/README.md'
+    );
+
+    if(markdown_res.ok) {
+        let markdown_text = await markdown_res.text();
+
+        serverlog(req, 200);
+        res.status(200).type('txt').send(markdown_text);
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
+    let markdown_res = await fetch(
+        `${github_prefix}` +
+        `/${req.params.ctf_event}` +
+        `/${req.params.ctf_type}` +
+        `/${req.params.ctf_chal}` +
+        '/README.md'
+    );
+
+    if(markdown_res.ok) {
+        let markdown_text = await markdown_res.text();
+
+        serverlog(req, 200);
+        res.status(200).type('txt').send(markdown_text);
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal/resources/:ctf_asset', async function(req, res, next) {
+    let asset_res = await fetch(
+        `${github_prefix}` +
+        `/${req.params.ctf_event}` +
+        `/${req.params.ctf_type}` +
+        `/${req.params.ctf_chal}` +
+        '/resources' +
+        `/${req.params.ctf_asset}`
+    );
+
+    console.log(asset_res)
+
+    if(asset_res.ok) {
+        let asset_data = await asset_res.buffer();
+
+        serverlog(req, 200);
+        res.status(200).send(asset_data);
+        return;
+    }
+    else {
+        next();
+    }
 });
 
 app.get('/favicon.ico', function(req, res) {
