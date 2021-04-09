@@ -44,16 +44,14 @@ app.use(
 app.use(nocache());
 
 app.get('/', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
+    serverlog(req, 200);
 
     res.render('pages/index');
     return;
 });
 
 app.get('/about', function(req, res) {
-    const res_code = 200;
-    serverlog(req, res_code);
+    serverlog(req, 200);
 
     res.render('pages/about');
     return;
