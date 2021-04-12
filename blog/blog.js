@@ -38,7 +38,7 @@ function fixLinks(html, originalUrl) {
     for(let i = 0; i < hyperlinks.length; i++) {
         link = hyperlinks[i].getAttribute('href');
 
-        if(!link.startsWith('/') && !link.includes('//')) {
+        if(!link.startsWith('/') && !link.includes('://')) {
             hyperlinks[i].setAttribute('href', `${originalUrl}/${link}`);
         }
     }
