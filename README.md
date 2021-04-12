@@ -1,7 +1,5 @@
 # Green-Avocado website
 
-This is the stable branch.
-
 ## Setup
 
 ### clone repository
