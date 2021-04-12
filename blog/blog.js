@@ -54,6 +54,24 @@ function fixLinks(html, originalUrl) {
     return html_parsed.toString();
 }
 
+function fixImages(html) {
+    const html_parsed = HTMLParser.parse(html);
+    const images = html_parsed.querySelectorAll('img');
+
+    for(let i = 0; i < images.length; i++) {
+        images[i].setAttribute('class', 'img-fluid');
+    }
+
+    return html_parsed.toString();
+}
+
+function fixHtml(html, originalUrl) {
+    html = fixLinks(html, originalUrl);
+    html = fixImages(html);
+
+    return html;
+}
+
 app.use(
     helmet({
         contentSecurityPolicy: {
@@ -99,7 +117,7 @@ app.get('/ctf', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = fixLinks(converter.makeHtml(markdown_text), req.originalUrl);
+        let markdown_html = fixHtml(converter.makeHtml(markdown_text), req.originalUrl);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
@@ -119,7 +137,7 @@ app.get('/ctf/:ctf_event', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = fixLinks(converter.makeHtml(markdown_text), req.originalUrl);
+        let markdown_html = fixHtml(converter.makeHtml(markdown_text), req.originalUrl);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
@@ -141,7 +159,7 @@ app.get('/ctf/:ctf_event/:ctf_type/:ctf_chal', async function(req, res, next) {
 
     if(markdown_res.ok) {
         let markdown_text = await markdown_res.text();
-        let markdown_html = fixLinks(converter.makeHtml(markdown_text), req.originalUrl);
+        let markdown_html = fixHtml(converter.makeHtml(markdown_text), req.originalUrl);
 
         serverlog(req, 200);
         res.render('pages/ctf/readme', {readme_html: markdown_html});
