@@ -4,7 +4,7 @@ services:
         ports:
             - "5000:5000"
     api:
-        build: home
+        build: api
         ports:
             - "5010:5010"
     blog:
