@@ -8,5 +8,5 @@ RUN chown -R web:web /home/web
 
 USER web
 RUN npm install
-CMD ["node", "home.js"]
+CMD ["node", "www.js"]
 

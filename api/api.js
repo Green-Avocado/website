@@ -19,7 +19,6 @@ const argv = yargs
 const PORT = 5010;
 
 const whitelist = [
-    'https://jasonn.dev',
     'https://www.jasonn.dev',
     'https://blog.jasonn.dev',
     'https://projects.jasonn.dev',
