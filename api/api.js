@@ -16,7 +16,7 @@ const argv = yargs
     .alias('help', 'h')
     .argv;
 
-const PORT = 5010;
+const PORT = 5000;
 
 const whitelist = [
     'https://www.jasonn.dev',

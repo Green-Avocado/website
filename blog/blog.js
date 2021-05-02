@@ -10,7 +10,7 @@ const path = require('path');
 const showdown = require('showdown');
 const yargs = require('yargs');
 
-const PORT = 5020;
+const PORT = 5000;
 
 const app = express();
 const converter = new showdown.Converter();
