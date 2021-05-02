@@ -2,17 +2,17 @@ services:
     www:
         build: www
         ports:
-            - "5000:5000"
+            - "127.0.0.1:5000:5000"
     api:
         build: api
         ports:
-            - "5010:5010"
+            - "127.0.0.1:5010:5010"
     blog:
         build: blog
         ports:
-            - "5020:5020"
+            - "127.0.0.1:5020:5020"
     projects:
         build: projects
         ports:
-            - "5030:5030"
+            - "127.0.0.1:5030:5030"
 
